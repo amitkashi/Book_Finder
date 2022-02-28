@@ -97,7 +97,6 @@ p {
   margin: 2.4rem;
 }
 .book-item {
-  width: 400px;
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.79);
