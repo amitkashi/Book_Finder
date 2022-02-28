@@ -1,8 +1,14 @@
 const searchBtn = document.getElementById("search-btn");
 const bookList = document.getElementById("book");
+const bookDetailsContent = document.querySelector(".book-details-content");
+const detailsCloseBtn = document.getElementById("details-close-btn");
 
 // event listenners
 searchBtn.addEventListener("click", getBookList);
+bookList.addEventListener("click", getBookDetails);
+detailsCloseBtn.addEventListener("click", () => {
+  bookDetailsContent.parentElement.classList.remove("showDetails");
+});
 
 // get book list
 function getBookList() {
@@ -10,7 +16,6 @@ function getBookList() {
   fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInputTxt}`)
     .then((response) => response.json())
     .then((data) => {
-      // console.log(data.items[1].volumeInfo);
       let html = "";
       if (data.items) {
         data.items.forEach((item) => {
@@ -21,7 +26,7 @@ function getBookList() {
             </div>
              <div class="book-title">
                 <h2>${item.volumeInfo.title}</h3>
-                <p>${item.volumeInfo.description}</p>
+                <a href="#" class="details-btn">Description</a>
             </div>
         </div>
       `;
@@ -33,5 +38,26 @@ function getBookList() {
       }
 
       bookList.innerHTML = html;
+    });
+}
+
+// get book details
+function getBookDetails() {
+  let searchInputTxt = document.getElementById("search-input").value.trim();
+  fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInputTxt}`)
+    .then((response) => response.json())
+    .then((data) => {
+      let html = "";
+      if (data.items) {
+        data.items.forEach((item) => {
+          html = `
+            <div class="book-desc">
+            <p>${item.volumeInfo.description}</p>
+            </div>
+      `;
+        });
+      }
+      bookDetailsContent.innerHTML = html;
+      bookDetailsContent.parentElement.classList.add("showDetails");
     });
 }
